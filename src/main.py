@@ -1,3 +1,4 @@
+# imports
 import sys, os, shutil
 from pprint import pprint
 from datetime import datetime
@@ -6,15 +7,15 @@ from datetime import datetime
 destination = os.path.abspath(os.path.join(os.getcwd(), sys.argv[1]))
 print("Cleaning directory -",destination)
 
-# get all non folder items from folder
+# get all files from folder, ommiting hidden files and self
 items = os.listdir(destination)
-files = [x for x in items if os.path.isfile(os.path.abspath(os.path.join(destination, x))) and x[0]!='.' and os.path.abspath(os.path.join(destination, x))!=os.path.abspath(os.path.join(os.getcwd(), sys.argv[0]))]  # also remove hidden files and omit self
+files = [x for x in items if os.path.isfile(os.path.abspath(os.path.join(destination, x))) and x[0]!='.' and os.path.abspath(os.path.join(destination, x))!=os.path.abspath(os.path.join(os.getcwd(), sys.argv[0]))]
 
 # get all seperate extensions
 extensions = [os.path.splitext(x)[1] for x in files if os.path.splitext(x)[1] != ""]
 extensions = list(set(extensions))
 
-# make all such folders (add some subscript is necessary)
+# make all folders for organising
 path = os.path.abspath(os.path.join(destination, "Organiser-"+str(datetime.date(datetime.now()))))
 try:
     os.mkdir(path)
@@ -30,3 +31,6 @@ for aFile in files:
         oldLocation = os.path.abspath(os.path.join(destination, aFile))
         newLocation = os.path.abspath(os.path.join(path, os.path.splitext(aFile)[1][1:], aFile))
         shutil.move(oldLocation,newLocation)
+
+# Completion message
+print("Done")
